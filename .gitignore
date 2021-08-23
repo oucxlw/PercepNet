@@ -137,7 +137,12 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-.vscode/
+# python cache
+__pycache__/
 
 *.exe
 src/*.pcm
+*.wav
+
+#binary folder
+bin/

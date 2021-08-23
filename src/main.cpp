@@ -4,8 +4,10 @@
 #define FRAME_SIZE 480
 
 //using namespace std;
-#define TRAINING 1
-#define TEST 1
+#ifndef TRAINING
+#define TRAINING 0
+#endif
+
 int main(int argc, char **argv)
 {
   if(TRAINING){
@@ -25,12 +27,12 @@ int main(int argc, char **argv)
   f1 = fopen(argv[1], "rb");
   fout = fopen(argv[2], "wb");
   while (1) {
-    short tmp[FRAME_SIZE];
+    short tmp[FRAME_SIZE]; 
     fread(tmp, sizeof(short), FRAME_SIZE, f1);
     if (feof(f1)) break;
-    for (i=0;i<FRAME_SIZE;i++) x[i] = tmp[i];
+    for (i=0;i<FRAME_SIZE;i++) x[i] = (float)tmp[i]/32768;
     rnnoise_process_frame(st, x, x);
-    for (i=0;i<FRAME_SIZE;i++) tmp[i] = x[i];
+    for (i=0;i<FRAME_SIZE;i++) tmp[i] = x[i]*32768;
     if (!first) fwrite(tmp, sizeof(short), FRAME_SIZE, fout);
     first = 0;
   }
